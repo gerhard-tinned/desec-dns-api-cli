@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 # Author Gerhard Steinbeis
-# Version: 0.1.1
+# Version: 0.1.2
 #
 
 import urllib2
@@ -21,6 +21,7 @@ class deSEC_DNS_API(object):
 		self.debug = debug
 		self.http_body = None
 		self.http_code = None
+		self.single_result = False
 
 
 	#
@@ -114,17 +115,22 @@ class deSEC_DNS_API(object):
 	#
 	# Return: boolean (based on http_code)
 	#
-	def domain_create(self, dname):
-		
+	def domain_create(self, dname):		
+		self.single_result = True
+
 		# compose POST data
 		post_data = dict()
 		post_data['name'] = dname
 		data = json.dumps(post_data)
 
+		# Extend headers with Content-Type
+		headers = self.header
+		headers['Content-Type'] = "application/json"
+
 		# compile request url
 		req_url = self.url_base
 		# request the list from the api
-		ret_state = self.http_request(url=req_url, header=self.header, data=data, type='POST')
+		ret_state = self.http_request(url=req_url, header=headers, data=data, type='POST')
 
 		# return code indicates success
 		if self.http_code < 300:
