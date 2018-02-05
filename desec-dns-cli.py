@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 # Author: Gerhard Steinbeis
-# Version: 0.1.1
+# Version: 0.1.2
 #
 
 import sys
@@ -138,7 +138,7 @@ if args.command == "domain" and args.subcommand == "create":
 			res_entry.pop('keys', None)
 		print(tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid"))
 	else:
-		print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg)
+		print("Error: The request failed with '" + str(api.http_code) + ": " + api.http_errmsg + "'\n   " + api.http_body)
 
 
 #
@@ -150,7 +150,7 @@ if args.command == "domain" and args.subcommand == "delete":
 	if ret_status == True:
 		print("Delete executed successfully.")
 	else:
-		print("Delete failed with '" + str(api.http_code) + " " + api.http_errmsg + "'")
+		print("Delete failed with '" + str(api.http_code) + " " + api.http_errmsg + "'\n   " + api.http_body)
 
 
 
@@ -176,7 +176,7 @@ if args.command == "rrset" and args.subcommand == "list":
 			res_entry['records'] = '\n'.join(res_entry['records'])
 		print(tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid"))
 	else:
-		print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg)
+		print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg + "'\n   " + api.http_body)
 
 
 #
@@ -195,7 +195,7 @@ if args.command == "rrset" and args.subcommand == "create":
 			res_entry['records'] = '\n'.join(res_entry['records'])
 		print(tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid"))
 	else:
-		print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg)
+		print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg + "'\n   " + api.http_body)
 
 
 #
@@ -207,7 +207,7 @@ if args.command == "rrset" and args.subcommand == "delete":
 	if ret_status == True:
 		print("Delete executed successfully.")
 	else:
-		print("Delete failed with '" + str(api.http_code) + " " + api.http_errmsg + "'")
+		print("Delete failed with '" + str(api.http_code) + " " + api.http_errmsg + "'" + "'\n   " + api.http_body)
 
 #
 # RRSET MODIFY
@@ -225,7 +225,7 @@ if args.command == "rrset" and args.subcommand == "modify":
 				res_entry['records'] = '\n'.join(res_entry['records'])
 			print(tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid"))
 		else:
-			print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg)
+			print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg + "'\n   " + api.http_body)
 
 	else:
 		print(sys.argv[0] + " " + args.command +": error: at least one of --ttl or --records need to be provided")
