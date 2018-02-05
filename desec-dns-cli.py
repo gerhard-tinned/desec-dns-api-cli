@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 # Author: Gerhard Steinbeis
-VERSION = "0.0.0a"
+# Version: 0.1.1
 #
 
 import sys
@@ -9,7 +9,6 @@ import yaml
 import argparse
 # https://bitbucket.org/astanin/python-tabulate
 from tabulate import tabulate
-import pprint 		## debugging
 from desec_dns_api import deSEC_DNS_API
 
 
@@ -92,8 +91,7 @@ args = parser.parse_args()
 header = {'Authorization': 'Token ' + api_token}
 
 if args.debug:
-	pp = pprint.PrettyPrinter(indent=2, width=60, depth=None, stream=None)
-	print args
+	print(args)
 
 
 
@@ -119,9 +117,9 @@ if args.command == "domain" and args.subcommand == "list":
 		for res_entry in res_dict:
 			# remove the keys for console output
 			res_entry.pop('keys', None)
-		print tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid")
+		print(tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid"))
 	else:
-		print "Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg
+		print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg)
 
 
 #
@@ -138,9 +136,9 @@ if args.command == "domain" and args.subcommand == "create":
 		for res_entry in res_dict:
 			# remove the keys for console output
 			res_entry.pop('keys', None)
-		print tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid")
+		print(tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid"))
 	else:
-		print "Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg
+		print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg)
 
 
 #
@@ -150,9 +148,9 @@ if args.command == "domain" and args.subcommand == "delete":
 	
 	ret_status = api.domain_delete(dname=args.dname)
 	if ret_status == True:
-		print "Delete executed successfully."
+		print("Delete executed successfully.")
 	else:
-		print "Delete failed with '" + str(api.http_code) + " " + api.http_errmsg + "'"
+		print("Delete failed with '" + str(api.http_code) + " " + api.http_errmsg + "'")
 
 
 
@@ -176,9 +174,9 @@ if args.command == "rrset" and args.subcommand == "list":
 		for res_entry in res_dict:
 			# prepare "records" for console output
 			res_entry['records'] = '\n'.join(res_entry['records'])
-		print tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid")
+		print(tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid"))
 	else:
-		print "Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg
+		print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg)
 
 
 #
@@ -195,9 +193,9 @@ if args.command == "rrset" and args.subcommand == "create":
 		for res_entry in res_dict:
 			# prepare "records" for console output
 			res_entry['records'] = '\n'.join(res_entry['records'])
-		print tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid")
+		print(tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid"))
 	else:
-		print "Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg
+		print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg)
 
 
 #
@@ -207,9 +205,9 @@ if args.command == "rrset" and args.subcommand == "delete":
 
 	ret_status = api.rrset_delete(dname=args.dname, type=args.type, subname=args.subname)
 	if ret_status == True:
-		print "Delete executed successfully."
+		print("Delete executed successfully.")
 	else:
-		print "Delete failed with '" + str(api.http_code) + " " + api.http_errmsg + "'"
+		print("Delete failed with '" + str(api.http_code) + " " + api.http_errmsg + "'")
 
 #
 # RRSET MODIFY
@@ -225,11 +223,11 @@ if args.command == "rrset" and args.subcommand == "modify":
 			for res_entry in res_dict:
 				# prepare "records" for console output
 				res_entry['records'] = '\n'.join(res_entry['records'])
-			print tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid")
+			print(tabulate(res_dict, headers='keys', showindex="always", tablefmt="grid"))
 		else:
-			print "Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg
+			print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg)
 
 	else:
-		print sys.argv[0] + " " + args.command +": error: at least one of --ttl or --records need to be provided"
+		print(sys.argv[0] + " " + args.command +": error: at least one of --ttl or --records need to be provided")
 
 
