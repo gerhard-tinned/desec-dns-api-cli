@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 # Author Gerhard Steinbeis
-# Version: 0.1.0
+# Version: 0.1.1
 #
 
 import urllib2
@@ -29,10 +29,10 @@ class deSEC_DNS_API(object):
 	def http_request(self, url, header, type='GET', data=None):
 		self.http_errmsg = ''
 		if self.debug :
-			print "*** DEBUG: http-request : http-url    : " + url
-			print "*** DEBUG: http-request : http-type   : " + type
-			print "*** DEBUG: http-request : http-header : " + str(header)
-			print "*** DEBUG: http-request : http-data   : " + str(data)
+			print("*** DEBUG: http-request : http-url    : " + url)
+			print("*** DEBUG: http-request : http-type   : " + type)
+			print("*** DEBUG: http-request : http-header : " + str(header))
+			print("*** DEBUG: http-request : http-data   : " + str(data))
 
 		opener = urllib2.build_opener(urllib2.HTTPHandler())
 		request = urllib2.Request(url, data=data, headers=header)
@@ -45,18 +45,18 @@ class deSEC_DNS_API(object):
 			self.http_errmsg = err.msg
 			self.http_body   = err.read()
 			if self.debug:
-				print "*** DEBUG: http-response: http-code   : "  + str(self.http_code)
-				print "*** DEBUG: http-response: http-error  : '" + str(err.code) + ": " + err.msg + "'"
-				print "*** DEBUG: http-response: http-body   :\n" + self.http_body + "\n"
+				print("*** DEBUG: http-response: http-code   : "  + str(self.http_code))
+				print("*** DEBUG: http-response: http-error  : '" + str(err.code) + ": " + err.msg + "'")
+				print("*** DEBUG: http-response: http-body   :\n" + self.http_body + "\n")
 			return False
 
 		self.http_body = ret.read()
 		self.http_code = ret.getcode()
 		if self.debug:
-			print "*** DEBUG: http-request : url         : "  + ret.geturl()
-			print "*** DEBUG: http-response: http-code   : "  + str(self.http_code)
-			print "*** DEBUG: http-response: http-header :\n" + str(ret.info())
-			print "*** DEBUG: http-response: http-body   :\n" + self.http_body + "\n"
+			print("*** DEBUG: http-request : url         : "  + ret.geturl())
+			print("*** DEBUG: http-response: http-code   : "  + str(self.http_code))
+			print("*** DEBUG: http-response: http-header :\n" + str(ret.info()))
+			print("*** DEBUG: http-response: http-body   :\n" + self.http_body + "\n")
 
 		return True
 
@@ -75,7 +75,7 @@ class deSEC_DNS_API(object):
 			ret_dict = [ret_dict]
 
 		if self.debug:
-			print "*** DEBUG: json2dict    : ret_dict    : " + str(ret_dict)
+			print("*** DEBUG: json2dict    : ret_dict    : " + str(ret_dict))
 
 		return ret_dict
 
