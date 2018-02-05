@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+##########
+
+# Project ignore
+desec-dns-cli.yml
+
