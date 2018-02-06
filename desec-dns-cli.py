@@ -1,13 +1,14 @@
 #!/usr/bin/python
 #
 # Author: Gerhard Steinbeis
-# Version: 0.1.2
+# Version: 0.1.3
 #
 
 import sys
 import yaml
 import argparse
-# https://bitbucket.org/astanin/python-tabulate
+# tabulate - structured console output 
+#   https://bitbucket.org/astanin/python-tabulate
 from tabulate import tabulate
 from desec_dns_api import deSEC_DNS_API
 
@@ -26,63 +27,68 @@ api_token = settings['api_token']
 # Argument parsing and help
 #
 # create argparser
-parser = argparse.ArgumentParser()
-parser.add_argument("--debug", action='store_true', help="Show debug information")
+parser = argparse.ArgumentParser(description="A python script utilysing the deSEC DNS api to manipulate DNS resource records from the command line.")
 
 # add subparsers
 subparsers = parser.add_subparsers()
 
 # add subparser for "domain"
-parser_domain = subparsers.add_parser('domain')
+parser_domain = subparsers.add_parser('domain', 						help="allows to manage domains")
 parser_domain.set_defaults(command='domain')
-subparser_domain = parser_domain.add_subparsers()
+subparser_domain = parser_domain.add_subparsers(						help="available sub-commands")
 
-parser_domain_list = subparser_domain.add_parser('list')
+parser_domain_list = subparser_domain.add_parser('list', 				help="list domains of the account")
 parser_domain_list.set_defaults(command='domain', subcommand='list')
-parser_domain_list.add_argument('--dname',  type=str, required=False,  help="Specify the zone name")
+parser_domain_list.add_argument('--dname',  type=str, required=False,  	help="show a specific domain instead of all")
+parser_domain_list.add_argument("--debug", action='store_true', 		help="show debug information")
 
-parser_domain_create = subparser_domain.add_parser('create')
+parser_domain_create = subparser_domain.add_parser('create', 			help="create new domains in the account")
 parser_domain_create.set_defaults(command='domain', subcommand='create')
-parser_domain_create.add_argument('--dname',  type=str, required=True,  help="Specify the zone name")
+parser_domain_create.add_argument('--dname',  type=str, required=True,  help="specifies the domain name to be created")
+parser_domain_create.add_argument("--debug", action='store_true', 		help="show debug information")
 
-parser_domain_delete = subparser_domain.add_parser('delete')
+parser_domain_delete = subparser_domain.add_parser('delete', 			help="delete domains from the account")
 parser_domain_delete.set_defaults(command='domain', subcommand='delete')
-parser_domain_delete.add_argument('--dname',  type=str, required=True,  help="Specify the zone name")
+parser_domain_delete.add_argument('--dname',  type=str, required=True,  help="specifies the domain name to be deleted")
+parser_domain_delete.add_argument("--debug", action='store_true', 		help="show debug information")
 
 
 # add subparser for "rrset"
-parser_rrset = subparsers.add_parser('rrset')
+parser_rrset = subparsers.add_parser('rrset', 							help="allows to manage resource-record-sets (RRset)")
 parser_rrset.set_defaults(command='rrset')
-subparser_rrset = parser_rrset.add_subparsers()
+subparser_rrset = parser_rrset.add_subparsers(							help="available sub-commands")
 
-parser_rrset_list = subparser_rrset.add_parser('list')
+parser_rrset_list = subparser_rrset.add_parser('list', 					help="list rrsets for a domain")
 parser_rrset_list.set_defaults(command='rrset', subcommand='list')
-parser_rrset_list.add_argument('--dname',   type=str, required=True,  help="Specify the zone name")
-parser_rrset_list.add_argument('--type',    type=str, required=False, help="Specify the record type")
-parser_rrset_list.add_argument('--subname', type=str, required=False, help="Specify the subdomain name")
+parser_rrset_list.add_argument('--dname',   type=str, required=True,  	help="specify the domain / zone to list the rrsets for")
+parser_rrset_list.add_argument('--type',    type=str, required=False, 	help="filter the rrsets by type (A, MX, TXT, ...)")
+parser_rrset_list.add_argument('--subname', type=str, required=False, 	help="filter the rrsets by sub-domain / host-part (www, ...)")
+parser_rrset_list.add_argument("--debug", 	action='store_true', 		help="show debug information")
 
-parser_rrset_create = subparser_rrset.add_parser('create')
+parser_rrset_create = subparser_rrset.add_parser('create', 				help="create a new rrsets for a domain")
 parser_rrset_create.set_defaults(command='rrset', subcommand='create')
-parser_rrset_create.add_argument('--dname',   type=str, required=True,  help="Specify the zone name")
-parser_rrset_create.add_argument('--type',    type=str, required=True,  help="Specify the record type")
-parser_rrset_create.add_argument('--subname', type=str, required=True,  help="Specify the subdomain name")
-parser_rrset_create.add_argument('--ttl',     type=str, required=True,  help="Specify the ttl in seconds")
-parser_rrset_create.add_argument('--records', type=str, required=True,  help="Specify the records as coma seperated list")
+parser_rrset_create.add_argument('--dname',   type=str, required=True,  help="specify the domain / zone to add the rrsets to")
+parser_rrset_create.add_argument('--type',    type=str, required=True,  help="specify the type of the rrset (A, MX, TXT, ...)")
+parser_rrset_create.add_argument('--ttl',     type=int, required=True,  help="specify the ttl in seconds for the rrset")
+parser_rrset_create.add_argument('--subname', type=str, required=True,  help="specify the sub-domain / host-part for the rrset")
+parser_rrset_create.add_argument('--records', type=str, required=True,  help="specify the records as comma separated list. Text records must contain quotes which requires to state the argument douple-quoted like this '\"Text Record 1\",\"Text Record 2\"' while MX records contain a priority and a text component, the priority should be outside the second quotes like this '10 \"smtp1.domain.tld\",20 \"smtp2.domain.tld\"'")
+parser_rrset_create.add_argument("--debug", 	action='store_true',	help="show debug information")
 
-parser_rrset_modify = subparser_rrset.add_parser('modify')
+parser_rrset_modify = subparser_rrset.add_parser('modify',				help="modify a rrsets from a domain")
 parser_rrset_modify.set_defaults(command='rrset', subcommand='modify')
-parser_rrset_modify.add_argument('--dname',   type=str, required=True,  help="Specify the zone name")
-parser_rrset_modify.add_argument('--type',    type=str, required=True,  help="Specify the record type")
-parser_rrset_modify.add_argument('--subname', type=str, required=True,  help="Specify the subdomain name")
-## optionalarguments
-parser_rrset_modify.add_argument('--ttl',     type=str, required=False,  help="Specify the ttl in seconds to be updated")
-parser_rrset_modify.add_argument('--records', type=str, required=False,  help="Specify the records as coma seperated list to be updated")
+parser_rrset_modify.add_argument('--dname',   type=str, required=True,  help="specify the domain / zone to modify the rrsets")
+parser_rrset_modify.add_argument('--type',    type=str, required=True,  help="specify the type of the rrset (A, MX, TXT, ...)")
+parser_rrset_modify.add_argument('--ttl',     type=int, required=False, help="specify the ttl in seconds for the rrset")
+parser_rrset_modify.add_argument('--subname', type=str, required=True,  help="specify the sub-domain / host-part for the rrset")
+parser_rrset_modify.add_argument('--records', type=str, required=False, help="specify the records as comma separated list. Text records must contain quotes which requires to state the argument douple-quoted like this '\"Text Record 1\",\"Text Record 2\"' while MX records contain a priority and a text component, the priority should be outside the second quotes like this '10 \"smtp1.domain.tld\",20 \"smtp2.domain.tld\"'")
+parser_rrset_modify.add_argument("--debug", 	action='store_true', 	help="show debug information")
 
-parser_rrset_delete = subparser_rrset.add_parser('delete')
+parser_rrset_delete = subparser_rrset.add_parser('delete',				help="delete a rrsets for a domain")
 parser_rrset_delete.set_defaults(command='rrset', subcommand='delete')
-parser_rrset_delete.add_argument('--dname',   type=str, required=True,  help="Specify the zone name")
-parser_rrset_delete.add_argument('--type',    type=str, required=True,  help="Specify the record type")
-parser_rrset_delete.add_argument('--subname', type=str, required=True,  help="Specify the subdomain name")
+parser_rrset_delete.add_argument('--dname',   type=str, required=True,  help="specify the domain / zone to modify the rrsets")
+parser_rrset_delete.add_argument('--type',    type=int, required=True,  help="specify the type of the rrset (A, MX, TXT, ...)")
+parser_rrset_delete.add_argument('--subname', type=str, required=True,  help="specify the sub-domain / host-part for the rrset")
+parser_rrset_delete.add_argument("--debug", 	action='store_true', 	help="show debug information")
 
 # start parsing args
 args = parser.parse_args()
