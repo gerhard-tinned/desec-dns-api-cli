@@ -1,8 +1,12 @@
 # desec-dns-api-cli
 
-A python script utilysing the deSEC DNS api to manipulate DNS resource records from the command line.
+A python script utilysing the deSEC.io DNS api to manipulate DNS resource records from the command line.
 
-THis project consist of two components. The deSEC api class handling all requests to the api and there responses. The second component is the command-line script utilising the api class. 
+* [deSEC.io - official website](https://desec.io)
+* [deSEC DNS API Documentation](https://desec.io/docs.html)
+* [deSEC stack (Github)](https://github.com/desec-io/desec-stack)
+
+This project consist of two components. The deSEC api class handling all requests to the api and there responses. The second component is the command-line script utilising the api class. 
 
 To format the console output, the cli script uses the [tabulate](https://bitbucket.org/astanin/python-tabulate) library which needs to be installed.
 
@@ -13,7 +17,7 @@ On macOS, the default python installation requires to install python modules a t
     sudo python -m pip install pyyaml tabulate
 
 
-## Setup
+## Configuration
 
 Before requests to the deSEC API can be made, the authorization token need to be configured. Together with the api url, these settings need to be stored in a config file named *desec-dns-cli.yml*. This file should look like this. (en axample config file is available)
 
