@@ -4,7 +4,7 @@ A python script utilysing the deSEC DNS api to manipulate DNS resource records f
 
 THis project consist of two components. The deSEC api class handling all requests to the api and there responses. The second component is the command-line script utilising the api class. 
 
-To format the console output, the cli script uses the (tabulate)[https://bitbucket.org/astanin/python-tabulate] library which needs to be installed.
+To format the console output, the cli script uses the [tabulate](https://bitbucket.org/astanin/python-tabulate) library which needs to be installed.
 
     pip install pyyaml tabulate
 
@@ -31,7 +31,7 @@ The scripts functionality is splitted into commands and subcommands. The command
 
 Not every action is allowed on every command. Some actions require options others allow optional options to be provided. See the complete list of commands, actions and there options below.
 
-    usage: desec-dns-cli.py [-h] Command Action [Options]
+    usage: desec-dns-cli.py [-h] [--debug] Command Action [Options]
      
     A python script utilysing the deSEC DNS api to manipulate DNS resource records
     from the command line.
