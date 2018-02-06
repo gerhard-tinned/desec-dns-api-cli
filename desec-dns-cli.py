@@ -78,7 +78,7 @@ parser_rrset_modify.add_argument("--debug", 	action='store_true', 	help="show de
 parser_rrset_delete = subparser_rrset.add_parser('delete',				help="delete a rrsets for a domain")
 parser_rrset_delete.set_defaults(command='rrset', subcommand='delete')
 parser_rrset_delete.add_argument('--dname',   type=str, required=True,  help="specify the domain / zone to modify the rrsets")
-parser_rrset_delete.add_argument('--type',    type=int, required=True,  help="specify the type of the rrset (A, MX, TXT, ...)")
+parser_rrset_delete.add_argument('--type',    type=str, required=True,  help="specify the type of the rrset (A, MX, TXT, ...)")
 parser_rrset_delete.add_argument('--subname', type=str, required=True,  help="specify the sub-domain / host-part for the rrset")
 parser_rrset_delete.add_argument("--debug", 	action='store_true', 	help="show debug information")
 
