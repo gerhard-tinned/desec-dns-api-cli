@@ -5,6 +5,7 @@
 #
 
 import sys
+import os.path
 import yaml
 import argparse
 # tabulate - structured console output 
@@ -12,15 +13,6 @@ import argparse
 from tabulate import tabulate
 from desec_dns_api import deSEC_DNS_API
 
-
-# Read settings from config file
-with open("desec-dns-cli.yml", "r") as stream:
-	try:
-		settings = yaml.load(stream)
-	except yaml.YAMLError as exc:
-		print(exc)
-api_url  = settings['api_url']
-api_token = settings['api_token']
 
 
 #
@@ -93,20 +85,47 @@ parser_rrset_delete.add_argument("--debug", 	action='store_true', 	help="show de
 # start parsing args
 args = parser.parse_args()
 
-# Prepare global parameters
-header = {'Authorization': 'Token ' + api_token}
-
 if args.debug:
 	print(args)
 
 
 
-
 ################################################################################
 
+# Read settings from config file
+if os.path.isfile("desec-dns-cli.yml") == False:
+	print("ERROR: The settings file 'desec-dns-cli.yml' is missing.")
+	print("Please refer to the example config file and the README for more details.")
+	exit()
+
+with open("desec-dns-cli.yml", "r") as stream:
+	try:
+		settings = yaml.load(stream)
+	except yaml.YAMLError as exc:
+		print("ERROR: The settings file 'desec-dns-cli.yml' is invalid YAML syntax.")
+		print("Please refer to the example config file and the README for more details.")
+		exit()
+
+if 'api_url' in settings:
+	api_url  = settings['api_url']
+else:
+	print("ERROR: The 'api_url' settings is missing in the 'desec-dns-cli.yml' config file.")
+	print("Please refer to the example config file and the README for more details.")
+	exit()
+
+if 'api_token' in settings:
+	api_token = settings['api_token']
+else:
+	print("ERROR: The 'api_token' settings is missing in the 'desec-dns-cli.yml' config file.")
+	print("Please refer to the example config file and the README for more details.")
+	exit()
+
+
+# Instantiate deSEC API object
 api = deSEC_DNS_API(api_url=api_url, api_token=api_token, debug=args.debug)
 
 ################################################################################
+
 
 
 #
