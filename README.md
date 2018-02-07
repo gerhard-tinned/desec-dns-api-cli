@@ -44,10 +44,10 @@ Not every action is allowed on every command. Some actions require options other
       domain list             list domains of the account
           --dname DNAME       show a specific domain instead of all   (optional)
      
-       domain create          create new domains in the account
+      domain create          create new domains in the account
           --dname DNAME       specifies the domain name to be created
      
-       domain delete          delete domains from the account
+      domain delete          delete domains from the account
           --dname DNAME       specifies the domain name to be deleted
      
       rrset list              list rrsets for a domain
@@ -79,7 +79,7 @@ Not every action is allowed on every command. Some actions require options other
                               the priority should be outside the second quotes like
                               this '10 "smtp1.domain.tld",20 "smtp2.domain.tld"'   (optional)
         
-      rrset delete                delete a rrsets for a domain
+      rrset delete            delete a rrsets for a domain
           --dname DNAME       specify the domain / zone to modify the rrsets
           --type TYPE         specify the type of the rrset (A, MX, TXT, ...)
           --subname SUBNAME   specify the sub-domain / host-part for the rrset
