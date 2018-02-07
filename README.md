@@ -43,6 +43,7 @@ Not every action is allowed on every command. Some actions require options other
     Command, Action and Options:
       domain list             list domains of the account
           --dname DNAME       show a specific domain instead of all   (optional)
+          --sort SORT         select the field to sort the output   (optional)
      
       domain create          create new domains in the account
           --dname DNAME       specifies the domain name to be created
@@ -54,6 +55,7 @@ Not every action is allowed on every command. Some actions require options other
           --dname DNAME       specify the domain / zone to list the rrsets for
           --type TYPE         filter the rrsets by type (A, MX, TXT, ...)   (optional)
           --subname SUBNAME   filter the rrsets by sub-domain / host-part (www, ...)   (optional)
+          --sort SORT         select the field to sort the output   (optional)
      
       rrset create            create a new rrsets for a domain
           --dname DNAME       specify the domain / zone to add the rrsets to
