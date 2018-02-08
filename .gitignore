@@ -104,4 +104,6 @@ ENV/
 
 # Project ignore
 desec-dns-cli.yml
+TODO
+*.txt
 
