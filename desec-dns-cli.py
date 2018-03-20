@@ -1,7 +1,7 @@
 #!/usr/bin/python
 """
 Author: Gerhard Steinbeis
-Version: 0.1.5
+Version: 0.1.6
 """
 
 from __future__ import print_function
@@ -140,7 +140,7 @@ if args.command == "domain" and args.subcommand == "list":
     ret_status = api.domain_list(dname=args.dname)
 
     # create a plain text list from the records array
-    if not ret_status:
+    if ret_status:
         # Post process the result
         res_dict = api.get_response_dict()
         for res_entry in res_dict:
@@ -169,7 +169,7 @@ if args.command == "domain" and args.subcommand == "create":
     ret_status = api.domain_create(dname=args.dname)
 
     # create a plain text list from the records array
-    if not ret_status:
+    if ret_status:
         # Post process the result
         res_dict = api.get_response_dict()
         for res_entry in res_dict:
@@ -186,7 +186,7 @@ if args.command == "domain" and args.subcommand == "create":
 if args.command == "domain" and args.subcommand == "delete":
 
     ret_status = api.domain_delete(dname=args.dname)
-    if not ret_status:
+    if ret_status:
         print("Delete executed successfully.")
     else:
         print("Delete failed with '" + str(api.http_code) + " " + api.http_errmsg + "'\n   " + api.http_body)
@@ -206,7 +206,7 @@ if args.command == "rrset" and args.subcommand == "list":
     ret_status = api.rrset_list(dname=args.dname, type=args.type, subname=args.subname)
 
     # create a plain text list from the records array
-    if not ret_status:
+    if ret_status:
         # Post process the result
         res_dict = api.get_response_dict()
         for res_entry in res_dict:
@@ -221,6 +221,9 @@ if args.command == "rrset" and args.subcommand == "list":
             else:
                 print("\nError: Sort field specified does not exist. Fallback to default sort order.\n")
         res_dict_sorted = sorted(res_dict, key=lambda k: k[sort_field])
+        print(tabulate(res_dict_sorted, headers='keys', showindex="always", tablefmt="grid"))
+    else:
+        print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg + "'\n   " + api.http_body)
 
 #
 # RRSET CREATE
@@ -230,7 +233,7 @@ if args.command == "rrset" and args.subcommand == "create":
     ret_status = api.rrset_create(dname=args.dname, type=args.type, subname=args.subname, records=args.records, ttl=args.ttl)
 
     # create a plain text list from the records array
-    if not ret_status:
+    if ret_status:
         res_dict = api.get_response_dict()
         # Post process the result
         for res_entry in res_dict:
@@ -247,7 +250,7 @@ if args.command == "rrset" and args.subcommand == "create":
 if args.command == "rrset" and args.subcommand == "delete":
 
     ret_status = api.rrset_delete(dname=args.dname, type=args.type, subname=args.subname)
-    if not ret_status:
+    if ret_status:
         print("Delete executed successfully.")
     else:
         print("Delete failed with '" + str(api.http_code) + " " + api.http_errmsg + "'" + "'\n   " + api.http_body)
@@ -260,7 +263,7 @@ if args.command == "rrset" and args.subcommand == "modify":
     if args.ttl or args.records:
         ret_status = api.rrset_modify(dname=args.dname, type=args.type, subname=args.subname, records=args.records, ttl=args.ttl)
 
-        if not ret_status:
+        if ret_status:
             res_dict = api.get_response_dict()
             # Post process the result
             for res_entry in res_dict:
