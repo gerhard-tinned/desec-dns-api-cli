@@ -5,8 +5,11 @@ Version: 0.1.3
 """
 
 from __future__ import print_function
-import urllib2
 import json
+try:
+    import urllib.request as urllib2 
+except ImportError:
+    import urllib2
 
 
 class deSEC_DNS_API(object):
@@ -52,7 +55,13 @@ class deSEC_DNS_API(object):
             print("*** DEBUG: http-request : http-data   : " + str(data))
 
         opener = urllib2.build_opener(urllib2.HTTPHandler())
-        request = urllib2.Request(url, data=data, headers=header)
+        if data is None:
+            req_data = None
+        else:
+            # encode data if passed to the function
+            req_data = data.encode('utf-8')
+        
+        request = urllib2.Request(url, data=req_data, headers=header)
         # Set the request type (GET, POST, PATCH, DELETE)
         request.get_method = lambda: method
         try:

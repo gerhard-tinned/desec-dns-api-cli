@@ -104,7 +104,7 @@ if not os.path.isfile("desec-dns-cli.yml"):
 
 with open("desec-dns-cli.yml", "r") as stream:
     try:
-        settings = yaml.load(stream)
+        settings = yaml.load(stream, Loader=yaml.FullLoader)
     except yaml.YAMLError as exc:
         print("ERROR: The settings file 'desec-dns-cli.yml' is invalid YAML syntax.")
         print("Please refer to the example config file and the README for more details.")
