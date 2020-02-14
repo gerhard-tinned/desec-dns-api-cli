@@ -42,23 +42,23 @@ Not every action is allowed on every command. Some actions require options other
      
     Command, Action and Options:
       domain list             list domains of the account
-          --dname DNAME       show a specific domain instead of all   (optional)
+          --zone DNAME        show a specific domain instead of all   (optional)
           --sort SORT         select the field to sort the output   (optional)
      
-      domain create          create new domains in the account
-          --dname DNAME       specifies the domain name to be created
+      domain create           create new domains in the account
+          --zone DNAME        specifies the domain name to be created
      
-      domain delete          delete domains from the account
-          --dname DNAME       specifies the domain name to be deleted
+      domain delete           delete domains from the account
+          --zone DNAME        specifies the domain name to be deleted
      
       rrset list              list rrsets for a domain
-          --dname DNAME       specify the domain / zone to list the rrsets for
+          --zone DNAME        specify the domain / zone to list the rrsets for
           --type TYPE         filter the rrsets by type (A, MX, TXT, ...)   (optional)
           --subname SUBNAME   filter the rrsets by sub-domain / host-part (www, ...)   (optional)
           --sort SORT         select the field to sort the output   (optional)
      
       rrset create            create a new rrsets for a domain
-          --dname DNAME       specify the domain / zone to add the rrsets to
+          --zone DNAME        specify the domain / zone to add the rrsets to
           --type TYPE         specify the type of the rrset (A, MX, TXT, ...)
           --ttl TTL           specify the ttl in seconds for the rrset
           --subname SUBNAME   specify the sub-domain / host-part for the rrset
@@ -67,10 +67,10 @@ Not every action is allowed on every command. Some actions require options other
                               douple-quoted like this '"Text Record 1","Text Record 2"'
                               while MX records contain a priority and a text component,
                               the priority should be outside the second quotes like
-                              this '10 "smtp1.domain.tld",20 "smtp2.domain.tld"'
+                              this '10 smtp1.domain.tld.,20 smtp2.domain.tld.'
      
       rrset modify            modify a rrsets from a domain
-          --dname DNAME       specify the domain / zone to modify the rrsets
+          --zone DNAME        specify the domain / zone to modify the rrsets
           --type TYPE         specify the type of the rrset (A, MX, TXT, ...)
           --ttl TTL           specify the ttl in seconds for the rrset   (optional)
           --subname SUBNAME   specify the sub-domain / host-part for the rrset
@@ -79,10 +79,10 @@ Not every action is allowed on every command. Some actions require options other
                               douple-quoted like this '"Text Record 1","Text Record 2"'
                               while MX records contain a priority and a text component,
                               the priority should be outside the second quotes like
-                              this '10 "smtp1.domain.tld",20 "smtp2.domain.tld"'   (optional)
+                              this '10 smtp1.domain.tld.,20 smtp2.domain.tld.'   (optional)
         
       rrset delete            delete a rrsets for a domain
-          --dname DNAME       specify the domain / zone to modify the rrsets
+          --zone DNAME        specify the domain / zone to modify the rrsets
           --type TYPE         specify the type of the rrset (A, MX, TXT, ...)
           --subname SUBNAME   specify the sub-domain / host-part for the rrset
      
