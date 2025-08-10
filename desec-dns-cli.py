@@ -32,18 +32,18 @@ subparser_domain = parser_domain.add_subparsers(                        help="av
 
 parser_domain_list = subparser_domain.add_parser('list',                help="list domains of the account")
 parser_domain_list.set_defaults(command='domain', subcommand='list')
-parser_domain_list.add_argument('--zone',  type=str, required=False,   help="show a specific domain instead of all")
-parser_domain_list.add_argument("--sort",   type=str, required=False,   help="select the field to sort the output")
-parser_domain_list.add_argument("--debug",  action='store_true',        help="show debug information")
+parser_domain_list.add_argument('--zone',     type=str, required=False, help="show a specific domain instead of all")
+parser_domain_list.add_argument("--sort",     type=str, required=False, help="select the field to sort the output")
+parser_domain_list.add_argument("--debug",    action='store_true',      help="show debug information")
 
 parser_domain_create = subparser_domain.add_parser('create',            help="create new domains in the account")
 parser_domain_create.set_defaults(command='domain', subcommand='create')
-parser_domain_create.add_argument('--zone',  type=str, required=True,  help="specifies the domain name to be created")
+parser_domain_create.add_argument('--zone',   type=str, required=True,  help="specifies the domain name to be created")
 parser_domain_create.add_argument("--debug",  action='store_true',      help="show debug information")
 
 parser_domain_delete = subparser_domain.add_parser('delete',            help="delete domains from the account")
 parser_domain_delete.set_defaults(command='domain', subcommand='delete')
-parser_domain_delete.add_argument('--zone',  type=str, required=True,  help="specifies the domain name to be deleted")
+parser_domain_delete.add_argument('--zone',   type=str, required=True,  help="specifies the domain name to be deleted")
 parser_domain_delete.add_argument("--debug",  action='store_true',      help="show debug information")
 
 
@@ -54,15 +54,15 @@ subparser_rrset = parser_rrset.add_subparsers(                          help="av
 
 parser_rrset_list = subparser_rrset.add_parser('list',                  help="list rrsets for a domain")
 parser_rrset_list.set_defaults(command='rrset', subcommand='list')
-parser_rrset_list.add_argument('--zone',   type=str, required=True,    help="specify the domain / zone to list the rrsets for")
-parser_rrset_list.add_argument('--type',    type=str, required=False,   help="filter the rrsets by type (A, MX, TXT, ...)")
-parser_rrset_list.add_argument('--subname', type=str, required=False,   help="filter the rrsets by sub-domain / host-part (www, ...)")
-parser_rrset_list.add_argument("--sort",    type=str, required=False,   help="select the field to sort the output")
-parser_rrset_list.add_argument("--debug",   action='store_true',        help="show debug information")
+parser_rrset_list.add_argument('--zone',      type=str, required=True,  help="specify the domain / zone to list the rrsets for")
+parser_rrset_list.add_argument('--type',      type=str, required=False, help="filter the rrsets by type (A, MX, TXT, ...)")
+parser_rrset_list.add_argument('--subname',   type=str, required=False, help="filter the rrsets by sub-domain / host-part (www, ...)")
+parser_rrset_list.add_argument("--sort",      type=str, required=False, help="select the field to sort the output")
+parser_rrset_list.add_argument("--debug",     action='store_true',      help="show debug information")
 
 parser_rrset_create = subparser_rrset.add_parser('create',              help="create a new rrsets for a domain")
 parser_rrset_create.set_defaults(command='rrset', subcommand='create')
-parser_rrset_create.add_argument('--zone',   type=str, required=True,  help="specify the domain / zone to add the rrsets to")
+parser_rrset_create.add_argument('--zone',    type=str, required=True,  help="specify the domain / zone to add the rrsets to")
 parser_rrset_create.add_argument('--type',    type=str, required=True,  help="specify the type of the rrset (A, MX, TXT, ...)")
 parser_rrset_create.add_argument('--ttl',     type=int, required=True,  help="specify the ttl in seconds for the rrset")
 parser_rrset_create.add_argument('--subname', type=str, required=True,  help="specify the sub-domain / host-part for the rrset")
@@ -71,7 +71,7 @@ parser_rrset_create.add_argument("--debug",   action='store_true',      help="sh
 
 parser_rrset_modify = subparser_rrset.add_parser('modify',              help="modify a rrsets from a domain")
 parser_rrset_modify.set_defaults(command='rrset', subcommand='modify')
-parser_rrset_modify.add_argument('--zone',   type=str, required=True,  help="specify the domain / zone to modify the rrsets")
+parser_rrset_modify.add_argument('--zone',    type=str, required=True,  help="specify the domain / zone to modify the rrsets")
 parser_rrset_modify.add_argument('--type',    type=str, required=True,  help="specify the type of the rrset (A, MX, TXT, ...)")
 parser_rrset_modify.add_argument('--ttl',     type=int, required=False, help="specify the ttl in seconds for the rrset")
 parser_rrset_modify.add_argument('--subname', type=str, required=True,  help="specify the sub-domain / host-part for the rrset")
@@ -80,7 +80,7 @@ parser_rrset_modify.add_argument("--debug",   action='store_true',      help="sh
 
 parser_rrset_delete = subparser_rrset.add_parser('delete',              help="delete a rrsets for a domain")
 parser_rrset_delete.set_defaults(command='rrset', subcommand='delete')
-parser_rrset_delete.add_argument('--zone',   type=str, required=True,  help="specify the domain / zone to modify the rrsets")
+parser_rrset_delete.add_argument('--zone',    type=str, required=True,  help="specify the domain / zone to modify the rrsets")
 parser_rrset_delete.add_argument('--type',    type=str, required=True,  help="specify the type of the rrset (A, MX, TXT, ...)")
 parser_rrset_delete.add_argument('--subname', type=str, required=True,  help="specify the sub-domain / host-part for the rrset")
 parser_rrset_delete.add_argument("--debug",   action='store_true',      help="show debug information")
