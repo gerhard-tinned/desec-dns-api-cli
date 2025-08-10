@@ -162,11 +162,10 @@ if args.command == "domain" and args.subcommand == "list":
         tblf = "grid"
         tbidx = "always"
         if args.format:
-            match args.format:
-                case var if "compact" in var:
-                    tblf="outline"
-                case _:
-                    tblf = "grid"
+            if "compact" in args.format:
+                tblf="outline"
+            else:
+                tblf = "grid"
 
             if "short" in args.format:
                 column_order = ["name","minimum_ttl"]
@@ -244,11 +243,10 @@ if args.command == "rrset" and args.subcommand == "list":
         tbidx = "always"
         tblf  = "grid"
         if args.format:
-            match args.format:
-                case var if "compact" in var:
-                    tblf="outline"
-                case _:
-                    tblf = "grid"
+            if "compact" in args.format:
+                tblf="outline"
+            else:
+                tblf = "grid"
 
             if "short" in args.format:
                 column_order = ["domain","subname","ttl","type","records"]
