@@ -35,6 +35,7 @@ parser_domain_list.set_defaults(command='domain', subcommand='list')
 parser_domain_list.add_argument('--zone',     type=str, required=False, help="show a specific domain instead of all")
 parser_domain_list.add_argument("--sort",     type=str, required=False, help="select the field to sort the output")
 parser_domain_list.add_argument("--debug",    action='store_true',      help="show debug information")
+parser_domain_list.add_argument('--format',   type=str, required=False, help="show list in specific format (short, compact, short+compact)")
 
 parser_domain_create = subparser_domain.add_parser('create',            help="create new domains in the account")
 parser_domain_create.set_defaults(command='domain', subcommand='create')
@@ -59,6 +60,7 @@ parser_rrset_list.add_argument('--type',      type=str, required=False, help="fi
 parser_rrset_list.add_argument('--subname',   type=str, required=False, help="filter the rrsets by sub-domain / host-part (www, ...)")
 parser_rrset_list.add_argument("--sort",      type=str, required=False, help="select the field to sort the output")
 parser_rrset_list.add_argument("--debug",     action='store_true',      help="show debug information")
+parser_rrset_list.add_argument('--format',    type=str, required=False, help="show list in specific format (short, compact, short+compact, bind)")
 
 parser_rrset_create = subparser_rrset.add_parser('create',              help="create a new rrsets for a domain")
 parser_rrset_create.set_defaults(command='rrset', subcommand='create')
@@ -156,10 +158,26 @@ if args.command == "domain" and args.subcommand == "list":
                 print("\nError: Sort field specified does not exist. Fallback to default sort order.\n")
         res_dict_sorted = sorted(res_dict, key=lambda k: k[sort_field])
 
+        column_order = ["created","published","touched","name","minimum_ttl"]
+        tblf = "grid"
+        tbidx = "always"
+        if args.format:
+            match args.format:
+                case var if "compact" in var:
+                    tblf="outline"
+                case _:
+                    tblf = "grid"
+
+            if "short" in args.format:
+                column_order = ["name","minimum_ttl"]
+                tbidx = "always"
+
         # print the result as table
-        print(tabulate(res_dict_sorted, headers='keys', showindex="always", tablefmt="grid"))
+        res_dict_sorted_ordered = [{key: row[key] for key in column_order} for row in res_dict_sorted]
+        print(tabulate(res_dict_sorted_ordered, headers="keys", showindex=tbidx, tablefmt=tblf))
     else:
         print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg)
+
 
 #
 # DOMAIN CREATE
@@ -221,7 +239,28 @@ if args.command == "rrset" and args.subcommand == "list":
             else:
                 print("\nError: Sort field specified does not exist. Fallback to default sort order.\n")
         res_dict_sorted = sorted(res_dict, key=lambda k: k[sort_field])
-        print(tabulate(res_dict_sorted, headers='keys', showindex="always", tablefmt="grid"))
+
+        column_order = ["created","touched","domain","subname","name","ttl","type","records"]
+        tbidx = "always"
+        tblf  = "grid"
+        if args.format:
+            match args.format:
+                case var if "compact" in var:
+                    tblf="outline"
+                case _:
+                    tblf = "grid"
+
+            if "short" in args.format:
+                column_order = ["domain","subname","ttl","type","records"]
+                tbidx = "always"
+
+            if "bind" in args.format:
+                column_order=["name","ttl","type","records"]
+                tblf = "plain"
+                tbidx = "never"
+
+        res_dict_sorted_ordered = [{key: row[key] for key in column_order} for row in res_dict_sorted]
+        print(tabulate(res_dict_sorted_ordered, headers="keys", showindex=tbidx, tablefmt=tblf))
     else:
         print("Error: The request failed with " + str(api.http_code) + ": " + api.http_errmsg + "'\n   " + api.http_body)
 
